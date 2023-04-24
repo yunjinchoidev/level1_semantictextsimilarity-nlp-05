@@ -1,6 +1,3 @@
-# level1_semantictextsimilarity-nlp-05
-
-
 <div align="center">
   <h1>STS 프로젝트</h1>
 </div>

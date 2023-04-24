@@ -2,8 +2,6 @@
   <h1>STS 프로젝트</h1>
 </div>
 
----
-
 ## 👋 팀원 소개
 <div align="center">
 <table>

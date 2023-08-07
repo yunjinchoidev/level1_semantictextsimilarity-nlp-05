@@ -75,7 +75,7 @@
 
 ### (1) Time-line 수립
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2a577194-df1f-498c-95a8-59c7f40c5124/Untitled.png)
+<img width="437" alt="Untitled" src="./img/1.png">
 
 ### (2) 협업 문화
 
@@ -123,50 +123,15 @@ train.csv
 ### 4-2. 탐색적 분석(EDA)
 
 - target 데이터인 ‘label’ 분포 확인
-    
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/23f9971f-dc9c-45fe-97c6-277044a82750/Untitled.png)
-    
+
+    <img width="437" alt="Untitled" src="./img/2.png">
+
     유사도가 0인 데이터가 상당 비율을 차지하며 , n.5인 label이 상대적으로 적게 분포되어있다.
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1355875b-a3c9-4bb1-aab7-ac6d2665fecc/Untitled.png)
-    
-    그에 비해 val데이터는 고른 분포를 보이며, 역시 n.5인 label이 상대적으로 적게 분포되어있다.
+    <img width="437" alt="Untitled" src="./img/3.png">
     
 
-EDA결과, 전처리부분에서 데이터 불균형 해소를 다룰 예정이다.
 
-- source에 따른 binary-label 확인
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88b52300-919d-4b8b-830e-203b5bef627d/Untitled.png)
-
-rtt source에 binary-label(유사도가 2.5 이상)인 값이 많이 분포되어있다. 검색과 데이터 확인을 통해 rtt가 역번역된 문장임을 알게 되었다.
-
-- 빈도수를 반영한 토큰의 시각화
-    
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2680cc38-be04-4b83-ab42-d70deae2eeda/Untitled.png)
-    
-    다음을 통해 불용어 제거의 필요성을 알게 되었고, 주어진 데이터가 청원, 영화 등의 주제를 가지고 있음을 알 수 있다.
-    
-- source에 따른 빈도수를 반영한 토큰의 시각화
-    
-                slack-rtt                                                              petition-rtt                                              nsmc-rtt
-    
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cda3b64-6191-4ab1-afaa-4c9bf4915c9b/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1157dd55-924f-45c3-91cc-0989d339fa95/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9a6ceb9d-d89b-42ea-86ca-4edd6aee0d92/Untitled.png)
-
-             slack-sampled                                                   petition-sampled                                       nsmc-sampled
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a0bee6ac-9428-4ea4-a8bc-6ba16b02cdb0/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a8832880-c17a-499e-9cc7-a4b897ffd53d/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bf72fe80-8326-4132-94f9-5d3780a636db/Untitled.png)
-
-    source별로 주요 토큰을 살펴보자면 다음과 같다. 다음을 통해 각 source별 주제를 파악할 수 있다.
 
 ### 4-3. 전처리
 
@@ -186,13 +151,13 @@ rtt source에 binary-label(유사도가 2.5 이상)인 값이 많이 분포되�
         
         인터넷에서 적절한 불용어 사전을 찾아 불용어 사전에 정의하였다. 두개의 사전을 전처리에 적용하여 모델의 성능을 평가한 결과 오히려 성능을 떨어뜨린다(약 0.06🔻)는 결과를 도출하였다.
         
-    
-    이를 통해 한국어 전처리에서 모델의 특성, 데이터의 특성을 파악하여 불용어를 정의해야한다는 점을 알게되었고, 오히려 성능을 저하할 수 있다고 판단하여 따로 불용어 처리를 진행하지 않기로 결정하였다.
+
+이를 통해 한국어 전처리에서 모델의 특성, 데이터의 특성을 파악하여 불용어를 정의해야한다는 점을 알게되었고, 오히려 성능을 저하할 수 있다고 판단하여 따로 불용어 처리를 진행하지 않기로 결정하였다.
     
 - **데이터 불균형 해소**
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/55bb417f-1374-440d-87a8-aace9fd866ba/Untitled.png)
-    
+    <img width="437" alt="Untitled" src="./img/12.png">
+
     앞서 언급한 EDA결과로 데이터 불균형 해소를 위해 oversampling과 undersampling을 시도하였다.
     
     - oversampling -  smote sampling
@@ -203,7 +168,6 @@ rtt source에 binary-label(유사도가 2.5 이상)인 값이 많이 분포되�
         
         RandomUnderSampler을 적용하여 모델성능을 확인해 본 결과 데이터 손실로 인해 성능이 떨어진다는 점을 알게되었다.
         
-    
     따라서 불균형해소 없이 진행하기로 결정하였다.
     
 - **역번역을 통한 데이터 증강**
@@ -267,23 +231,36 @@ koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 �
     
     ![klue/roberta-small, klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts  의 경우는 모두 NAN과 null 의 결과가 나왔다.
     
-    jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2aa3030c-5338-48fa-a105-f2b715eda4fb/Untitled.png)
+    <img width="437" alt="Untitled" src="./img/13.png">
+
+    jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.]
     
-    klue/roberta-small, klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts  의 경우는 모두 NAN과 null 의 결과가 나왔다.
     
-    jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.
+<br/>
+<br/>
+<br/>
+
+
+
+klue/roberta-small, klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts  의 경우는 모두 NAN과 null 의 결과가 나왔다.
+    
+jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.
+
+
     
 - 앙상블
     - 배깅 기법 사용
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ff425c5a-b2bb-46d7-a067-17fefc312569/Untitled.png)
-    
+    <img width="437" alt="Untitled" src="./img/14.png">
+
     boostrap 샘플링을 통해 10개의 샘플을 만들어 10개의 klue/roberta-large 모델을 불러와 각각의 샘플에 대해서 fine-tuning을 진행하였다. 각각의 모델에서 output을 만들고 평균을 내어(soft-voting) 최종 유사도를 도출했다.
     
     |  | 모델 | lr | batch size | epoch | public score | private score |
     | --- | --- | --- | --- | --- | --- | --- |
     | 배깅 기법 전 | klue/roberta-large | 1e-5 | 16 | 23 | 0.9068 | 0.9264 |
     | 배깅 기법 후 | klue/roberta-large | 1e-5 | 16 | 24 | 0.9106 | 0.9284 |
+
+
 
 ### 4-6. 최종 모델
 
@@ -292,7 +269,8 @@ koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 �
 - 하이퍼파라미터: batch size 16, lr 1e-5
 - pearson 점수: 0.9196 (public) → 0.9339 (private)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cdc9f8b8-a695-42ee-b041-61c1fc56d230/Untitled.png)
+<img width="437" alt="Untitled" src="./img/15.png">
+
 
 # 5. 자체 평가 의견
 
@@ -337,7 +315,3 @@ koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 �
 
 
 
-
-
-#### README Reference
-https://github.com/boostcamp-ai-tech-4/coding-test-study

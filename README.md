@@ -75,7 +75,7 @@
 
 ### (1) Time-line 수립
 
-<img width="437" alt="Untitled" src="./img/1.png">
+<img width="700" alt="Untitled" src="./img/1.png">
 
 ### (2) 협업 문화
 
@@ -90,7 +90,7 @@
 ### 4-1. 학습데이터 소개
 
 <aside>
-✔️ **데이터셋(https://klue-benchmark.com/tasks/67/overview/description)**
+✔️ 데이터셋(https://klue-benchmark.com/tasks/67/overview/description)
 
 - KLUE의 Semantic Textual Similarity(STS) 데이터셋
 - 입력 : 두 문장
@@ -109,7 +109,11 @@
 - 문맥적 유사도를 0과 5사이로 측정한 데이터에 대하여 유사도 점수를 예측하는 것을 목적으로 한다.
 </aside>
 
-train.csv
+
+
+**데이터 예시**
+
+`train.csv`
 
 | index | id | source | sentence_1 | sentence_2 | label | binary-label |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -119,6 +123,14 @@ train.csv
 | 9323 | boostcamp-sts-v1-train-9323 | petition-sampled | 법정공휴일 휴무관련 (근로자) | 법정공휴일의 유급휴무화를 막아야 합니다. | 1.4 | 0.0 |
 
 9324 rows × 6 columns
+
+
+
+
+
+
+
+
 
 ### 4-2. 탐색적 분석(EDA)
 
@@ -136,7 +148,9 @@ train.csv
 ### 4-3. 전처리
 
 - **영어 토큰 처리**
-(1) 번역기: googletrans, facebook/mbart-large-50-one-to-many-mmt (2) 문장 번역, 단어 번역을 실험했다. googletrans로 단어를 번역한 결과와 아무것도 하지 않은 결과가 가장 좋았다. 또한, (3) 영어 단어 번역, 삭제 (4) 맞춤법 검사 유무를 실험했다. 맞춤법 검사 후 영어 단어를 번역한 결과가 가장 좋았다. 자세한 실험 내용은 [개인 회고: 권지은]에서 볼 수 있다.
+(1) 번역기: googletrans, facebook/mbart-large-50-one-to-many-mmt (2) 문장 번역, 단어 번역을 실험했다. googletrans로 단어를 번역한 결과와 아무것도 하지 않은 결과가 가장 좋았다. 또한, (3) 영어 단어 번역, 삭제 (4) 맞춤법 검사 유무를 실험했다. 맞춤법 검사 후 영어 단어를 번역한 결과가 가장 좋았다.
+
+
 - **불용어 처리**
     
     문장의 의미에 큰 영향을 주지 않는 불용어처리를 통해 모델의 성능을 개선할 수 있다는 가설을 세워 불용어 처리를 두 사전을 정의하여 진행하였다.
@@ -149,10 +163,9 @@ train.csv
         
     - 인터넷에서 불용어 사전 찾기
         
-        인터넷에서 적절한 불용어 사전을 찾아 불용어 사전에 정의하였다. 두개의 사전을 전처리에 적용하여 모델의 성능을 평가한 결과 오히려 성능을 떨어뜨린다(약 0.06🔻)는 결과를 도출하였다.
-        
-
-이를 통해 한국어 전처리에서 모델의 특성, 데이터의 특성을 파악하여 불용어를 정의해야한다는 점을 알게되었고, 오히려 성능을 저하할 수 있다고 판단하여 따로 불용어 처리를 진행하지 않기로 결정하였다.
+        인터넷에서 적절한 불용어 사전을 찾아 불용어 사전에 정의하였다. 두개의 사전을 전처리에 적용하여 모델의 성능을 평가한 결과 오히려 성능을 떨어뜨린다(약 0.06🔻)는 결과를 도출하였다. 
+    
+  이를 통해 한국어 전처리에서 모델의 특성, 데이터의 특성을 파악하여 불용어를 정의해야한다는 점을 알게되었고, 오히려 성능을 저하할 수 있다고 판단하여 따로 불용어 처리를 진행하지 않기로 결정하였다.
     
 - **데이터 불균형 해소**
     
@@ -203,11 +216,17 @@ train.csv
     라벨 정규화를 적용한 데이터로 학습한 모델이 새로운 데이터에 대한 추론 성능이 좋다고 판단
     
 - **koeda 라이브러리를 이용한 데이터 증강**
-koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 일부를 유의어 교체,  일부 단어 삭제, 신규 단어 추가 등의 데이터 증강을 실시하였다. 유의어 교체, 무작위 삽입, 유의어 삽입, 유의어 삭제의 비율을 바꿔가며 실험하였지만 유의미한 결과는 얻지 못했다.  자세한 내용은 [개인 랩업리포트: 최윤진]에서 볼 수 있다.
+koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 일부를 유의어 교체,  일부 단어 삭제, 신규 단어 추가 등의 데이터 증강을 실시하였다. 유의어 교체, 무작위 삽입, 유의어 삽입, 유의어 삭제의 비율을 바꿔가며 실험하였지만 유의미한 결과는 얻지 못했다.
+
+
 - **맞춤법 검사**
-맞춤법이 맞지 않는 문장들을 hanspell 라이브러리를 이용하여 맞춤법 전처리를 하여 fine-tuning 하면 학습이 더 잘 될것이라는 가설을 세웠다. roberta-small 모델을 이용하여 batch-size:16, epoch:10, lr:1e-5 로 수행한 결과 성능이 떨어짐을 확인하였다. 그림 자료는 [개인 랩업리포트: 최윤진]에서 볼 수 있다.
+맞춤법이 맞지 않는 문장들을 hanspell 라이브러리를 이용하여 맞춤법 전처리를 하여 fine-tuning 하면 학습이 더 잘 될것이라는 가설을 세웠다. roberta-small 모델을 이용하여 batch-size:16, epoch:10, lr:1e-5 로 수행한 결과 성능이 떨어짐을 확인하였다.
+
+
 - **어순 바꿔서 데이터 증강 처리**
-단어의 순서가 학습에 영향을 줄거라는 가설을 세우고 데이터 어순을 바꿔 데이터셋을 2배로 증강 시켜 fine-tuning 을 했으나 성능 향상은 없었다. 그림 자료는 [개인 랩업리포트: 최윤진]에서 볼 수 있다.
+단어의 순서가 학습에 영향을 줄거라는 가설을 세우고 데이터 어순을 바꿔 데이터셋을 2배로 증강 시켜 fine-tuning 을 했으나 성능 향상은 없었다.
+
+
 
 ### 4-4. 모델 선정
 
@@ -228,23 +247,16 @@ koeda 라이브러리의 EDA 클래스를 이용하여 기존 데이터 셋의 �
 ### 4-5. 모델 평가 및 개선
 
 - Sweep 을 통한 하이퍼 파라메터 결과 분석
-    
-    ![klue/roberta-small, klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts  의 경우는 모두 NAN과 null 의 결과가 나왔다.
-    
-    <img width="437" alt="Untitled" src="./img/13.png">
+  <img width="437" alt="Untitled" src="./img/13.png">
 
-    jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.]
+  - `klue/roberta-small`, `klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts` 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 `klue/roberta-large`, `ys7yoo/sentence-roberta-large-kor-sts` 의 경우는 모두 NAN과 null 의 결과가 나왔다.
+  - `jhgan/ko-sbert-sts`, `sentence-transformers/xlm-r-large-en-ko-nli-ststb` 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.]
     
+
     
 <br/>
 <br/>
 <br/>
-
-
-
-klue/roberta-small, klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts 모델에 대하여 batch-size는 8, 16, 32, 64 의 범위로, learning_rate 는 0.0001 ~ 0.00001 균등 분포로 sweep 을 적용한 것. cuda memory 에러와 val_pearson = NAN 해결을 하지 못해 klue/roberta-large, ys7yoo/sentence-roberta-large-kor-sts  의 경우는 모두 NAN과 null 의 결과가 나왔다.
-    
-jhgan/ko-sbert-sts, sentence-transformers/xlm-r-large-en-ko-nli-ststb 도 위 하이퍼파라미터 범위와 학습률 [1e-6, 1e-4]와 [5e-6, 5e-5]에 대해 sweep 했지만 모두 NAN의 결과가 나왔다.
 
 
     
